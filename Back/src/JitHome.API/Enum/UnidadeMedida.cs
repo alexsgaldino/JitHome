@@ -1,12 +1,13 @@
+using System.Linq.Expressions;
 namespace JitResidencial.Domain.Enum
 {
     public enum UnidadeMedida
     {
-        Kilograma,
-        Grama,
-        Metro,
-        Litro,
-        Mililitro
+        KG,
+        g,
+        m,
+        LambdaExpression,
+        ml
         
 
     }

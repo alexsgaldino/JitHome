@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.Linq;
+using JitHome.API.Data;
 using JitResidencial.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,38 +11,24 @@ namespace JitHome.API.Controllers
     [Route("api/[controller]")]
     public class ProdutoController : ControllerBase
     {
-        public IEnumerable<Produto> _produto = new Produto[] {
-                new Produto() {
-                    Id = 1,
-                    NomeProduto = "Arroz Prato Fino",
-                    UserId = 1,
-                    Volume = "KG",
-                    DataValidade = "20/10/1974 10:25:30"
-                },
-                new Produto() {
-                    Id = 2,
-                    NomeProduto = "Açucar Cristal",
-                    UserId = 1,
-                    Volume = "g",
-                    DataValidade = "29/10/1974 10:25:30"
-                }
-            };
+        private readonly JitHomeContext _context;
 
-        public ProdutoController()
+        public ProdutoController(JitHomeContext context)
         {
+            _context = context;
 
         }
 
         [HttpGet]
         public IEnumerable<Produto> Get()
         {
-            return _produto;
+            return _context.Produtos;
         }
 
         [HttpGet("{id}")]
-        public IEnumerable<Produto> GetById(int id)
+        public Produto GetById(int id)
         {
-            return _produto.Where(produto => produto.Id == id);
+            return _context.Produtos.FirstOrDefault(produto => produto.Id == id);
         }
         [HttpPost]
         public string Post()

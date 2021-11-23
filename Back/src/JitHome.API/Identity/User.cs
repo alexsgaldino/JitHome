@@ -10,7 +10,7 @@ namespace JitResidencial.Domain.Identity
         public string Sobrenome { get; set; }
         public string ImagemURL { get; set; }
         public string SobreMim { get; set; }
-        public IEnumerable<UserRole> UserRoles { get; set; }
+  //      public IEnumerable<UserRole> UserRoles { get; set; }
         public string Password { get; set; }
         public Grupo Grupo { get; set; }
     }

@@ -17,17 +17,8 @@ namespace JitResidencial.Domain.Models
         public string DataValidade { get; set; }
         public string DataInclusao { get; set; }
         public string DataAlteracao { get; set; }
-        public int UnidadeMedidaId {get; set;}
-        public int CategoriaId  {get; set;}
-        public Categoria Categoria { get; set; }
-        public int MovimentoId { get; set; }
-        public IEnumerable<MovimentacaoProduto> MovimentacaoProduto { get; set; }
-        public int EstoqueId { get; set; }
-        public IEnumerable<Estoque> Estoque { get; set; }
-        public int ListaPrecoId { get; set; }
-        public ListaPreco ListaPreco { get; set; }
-        public int GrupoId { get; set; }    
-        public string ImagemURL { get; set; }
         public UnidadeMedida UnidadeMedida { get; set; }
+        public Categoria Categoria { get; set; }
+        public string ImagemURL { get; set; }
     }
 }
