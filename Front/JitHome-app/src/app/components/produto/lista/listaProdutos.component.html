@@ -2,118 +2,111 @@
   <app-titulo [titulo]="'Produto'"
               [iconClass]="'fas fa-shopping-cart'"
               [botaoListar]="false"
-              [acao]="'Lista'">
+              [acao]="'Listar'">
   </app-titulo>
 </div>
 
 <div class="container">
-  <div class="mt-3 ">
-    <div class="container bg-light p-2" >
-      <div class="input-group input-group-sm " >
-        <div class="input-group-prepend">
-          <span class="input-group-text bg-primary text-white" id="inputGroup-sizing-sm">Filtro:</span>
-        </div>
-        <input  type="text"
-                class="form-control col"
-                aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-sm"
-                placeholder="buscar por descrição"
-                [(ngModel)]="filtroLista">
-        <button button class="d-flex btn btn-outline-primary ms-2" routerLink="/produto/detalhe" tooltip="Novo"  >
-          <i id="fontMais" class="mt-2 fas fa-plus-circle m-1"></i>
-          <b  class="mt-1">Novo</b>
-        </button>
+  <div class="myFilter container mt-3 p-2" >
+    <div class="input-group input-group-sm " >
+      <div class="input-group-prepend">
+        <span class="input-group-text bg-primary text-white" id="inputGroup-sizing-sm">Filtro:</span>
       </div>
-    </div>
-    <div class="container bg-light mt-1" >
-      <div class="row">
-        <table class="table table-striped table-hover bg-light">
-          <thead>
-            <tr class="bg-primary text-white">
-              <th>
-                <button type="button" class="btn btn-outline-light btn-sm"
-                (click)="recolherImagem()">
-                  {{exibirImagem ? 'Exibir' : 'Ocultar'}}
-                </button>
-              </th>
-              <th>#</th>
-              <th class="d-none d-md-table-cell">Código de Barras</th>
-              <th>Produto</th>
-              <th class="d-none d-md-table-cell">Unid. Med.</th>
-              <th class="d-none d-md-table-cell">Volume</th>
-              <th>Categoria</th>
-              <th class="d-none d-md-table-cell">Data Validade</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
-          <tbody *ngIf="produtos && produtos.length">
-            <tr *ngFor="let produto of produtosFiltrados" style="cursor: pointer">
-        <!--              <tr *ngFor="let produto of produtosFiltrados" (click)="detalheProduto(produto.id)" style="cursor: pointer"></tr>-->
-                <td>
-                  <img src="/assets/image/{{produto.imagemURL}}" alt="{{produto.nomeProduto}}"
-                    [collapse]="exibirImagem"
-                    [isAnimated]='true'
-                    [style.width.px]='larguraImagem'
-                    [style.maring.px]='margemImagem'
-                    [style.height.px]='alturaImagem'
-                  >
-                </td>
-                <td>{{produto.id}}</td>
-                <td class="d-none d-md-table-cell">{{produto.codigoBarras}}</td>
-                <td>{{produto.nomeProduto}}</td>
-                <td class="d-none d-md-table-cell">{{produto.unidadeMedida}}</td>
-                <td class="d-none d-md-table-cell">{{produto.volume}}</td>
-                <td>{{produto.categoria}}</td>
-                <td class="d-none d-md-table-cell" >{{produto.dataValidade | DateFormatPipe}}</td>
-      <!--                <td class="d-none d-md-table-cell" >{{produto.dataValidade | DateTimeFormatPipe}}</td>-->
-                <td>
-                  <div class="d-grid d-md-flex justify-content-md-end b-0 m-0 p-0">
-                    <button type="button" class="btn btn-danger "  tooltip="Excluir" (click)="abrirModal($event, template, produto.id)">
-                    <i class="fa fa-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-            <tfoot *ngIf="!produtos.length">
-              <tr>
-                <td colspan="8" class="text-center">
-                  <h4>Nenhum evento encontrado</h4>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-      </div>
-    </div>
-    <div class="p-2 bg-primary text-white">
-        <div class="row">
-          <div class="col-6">
-            Exibindo <b>5</b> de <b>25</b> entradas
-          </div>
-          <div class="col-6 ">
-            <ul class="pagination hidden-xs pull-right">
-              <li><a href="#"><i class="fas fa-angle-double-left"></i></a></li>
-              <li class="active"><a href="">1</a></li>
-              <li><a href="#">2</a> </li>
-              <li><a href="#">3</a> </li>
-              <li><a href="#">4</a> </li>
-              <li><a href="#">5</a> </li>
-              <li><a href="#"><i class="fas fa-angle-double-right"></i></a></li>
-            </ul>
-            <ul class="pagination visible-xs pull-right">
-              <li><a href="#"></a></li>
-              <li><a href="#"></a></li>
-            </ul>
-        </div>
-      </div>
+      <input  type="text"
+        class="form-control col"
+        aria-label="Sizing example input"
+        aria-describedby="inputGroup-sizing-sm"
+        placeholder="buscar por descrição"
+        [(ngModel)]="filtroLista">
+      <button button class="d-flex btn btn-primary ms-2" routerLink="/produto/detalhe" tooltip="Novo"  >
+        <i id="fontMais" class="mt-2 fas fa-plus-circle m-1"></i>
+        <b  class="mt-1">Novo</b>
+      </button>
     </div>
   </div>
+</div>
+
+<div class="container mt-0" >
+  <table class="table table-striped table-hover bg-light">
+    <thead>
+      <tr class="myThead p-0">
+        <th>
+          <a (click)="recolherImagem()">
+            <i class="fas {{exibirImagem ? 'fa-search-plus' : 'fa-search-minus'}}"></i>
+          </a>
+        </th>
+        <th>#</th>
+        <th class="d-none d-md-table-cell">Código de Barras</th>
+        <th>Produto</th>
+        <th class="d-none d-md-table-cell">Unid. Med.</th>
+        <th class="d-none d-md-table-cell">Volume</th>
+        <th>Categoria</th>
+        <th class="d-none d-md-table-cell">Data Validade</th>
+        <th>Ação</th>
+      </tr>
+    </thead>
+      <tbody *ngIf="produtos && produtos.length">
+        <tr *ngFor="let produto of produtosFiltrados" style="cursor: pointer">
+          <td>
+            <img src="/assets/image/{{produto.imagemURL}}" alt="{{produto.nomeProduto}}"
+              [collapse]="exibirImagem"
+              [isAnimated]='true'
+              [style.width.px]='larguraImagem'
+              [style.maring.px]='margemImagem'
+              [style.height.px]='alturaImagem'
+            >
+          </td>
+          <td>{{produto.id}}</td>
+          <td class="d-none d-md-table-cell">{{produto.codigoBarras}}</td>
+          <td>{{produto.nomeProduto}}</td>
+          <td class="d-none d-md-table-cell">{{produto.unidadeMedida}}</td>
+          <td class="d-none d-md-table-cell">{{produto.volume}}</td>
+          <td>{{produto.categoria}}</td>
+          <td class="d-none d-md-table-cell" >{{produto.dataValidade | DateFormatPipe}}</td>
+          <td>
+            <div class="d-grid d-md-flex justify-content-md-end b-0 m-0 p-0">
+              <button type="button" class="btn btn-danger "  tooltip="Excluir" (click)="abrirModal(template)">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot *ngIf="!produtos.length">
+        <tr>
+          <td colspan="8" class="text-center">
+            <h4>Nenhum evento encontrado</h4>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="ps-2 p-0 bg-primary text-white">
+      <div class="row">
+        <div class="col-6">
+          Exibindo <b>5</b> de <b>25</b> entradas
+        </div>
+        <div class="col-6 ">
+          <ul class="pagination hidden-xs pull-right">
+            <li><a href="#"><i class="fas fa-angle-double-left"></i></a></li>
+            <li class="active"><a href="">1</a></li>
+            <li><a href="#">2</a> </li>
+            <li><a href="#">3</a> </li>
+            <li><a href="#">4</a> </li>
+            <li><a href="#">5</a> </li>
+            <li><a href="#"><i class="fas fa-angle-double-right"></i></a></li>
+          </ul>
+          <ul class="pagination visible-xs pull-right">
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+          </ul>
+      </div>
+    </div>
 </div>
 
 <p class="text-white">{{produtos | json}}</p>
 <ng-template #template>
   <div class="modal-body modal-backdrop-bg text-center">
-    <p>Confirma a exclusão do produto {{this.id}} ?</p>
+    <p>Confirma a exclusão do produto?</p>
     <button type="button" class="btn btn-default" (click)="confirmar()" >Sim</button>
     <button type="button" class="btn btn-primary" (click)="recusar()" >Não</button>
   </div>

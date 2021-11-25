@@ -1,21 +1,23 @@
 
-<div class="card bg-dark mt-3 p-0">
-  <div class="card-header  pt-0 pb-0">
-    <div class="d-flex p-2 my-2 text-white">
-      <div class="myCardHeader d-flex align-items-center me-auto">
-        <i class="{{iconClass}} mr-5"></i>
+<div class="myTitle card mt-3 p-0">
+  <div class="card-header">
+    <div class="d-flex p-0 m-0">
+      <div class="d-flex align-items-center me-auto">
+        <i class="{{iconClass}}"></i>
         <div class="d-flex">
           <h4>{{titulo}}</h4>
         </div>
       </div>
-      <div class="p-3" *ngIf="botaoListar">
-        <button type="button" class="btn btn-outline-light" (click)="listar()">
+      <div class="p-0" *ngIf="botaoListar">
+        <button type="button" class="btn btn-primary" (click)="listar()">
           Listar {{titulo}}
         </button>
       </div>
     </div>
-    <div class="form-group col-12">
-      <h4 class="border-bottom">{{acao}} {{titulo}}</h4>
+  </div>
+  <div class="container">
+    <div class="card mt-1 p-1 mb-1">
+      <h3>{{acao}} {{titulo}}</h3>
     </div>
   </div>
 </div>

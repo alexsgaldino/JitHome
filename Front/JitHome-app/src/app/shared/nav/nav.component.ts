@@ -23,10 +23,11 @@ export class NavComponent implements OnInit {
   }
 
   disableMenu(): boolean {
-    return (this.router.url == '/usuario/login'
-      || this.router.url == '/home'
-      ? true
-      : false);
+    return false;
+//      return (this.router.url == '/usuario/login'
+//      || this.router.url == '/home'
+//      ? true
+//      : false);
   }
 
 }

@@ -1,5 +1,5 @@
 <nav class="navbar  navbar-expand-lg navbar-dark bg-primary">
-  <div class="container-fluid">
+  <div class="container">
     <div class="row " >
       <a class="navbar-brand" routerLink='home'>
         <div ngClass="d-flex justify-content-center align-items-center">
@@ -24,47 +24,40 @@
       id="navbarColor01"
       [collapse]="isCollapsed" [isAnimated]="true">
       <ul class="navbar-nav me-auto mb-0 mg-lg-0">
-        <li class="nav-item ">
+        <li>
           <a  [ngClass]="[disableMenu() ? 'nav-link disabled' : 'nav-link ']"
-              routerLink="/produto/detalhe">Produto
+              routerLink="produto" routerLinkActive="active">Produto
           </a>
-        </li>
         <li class="nav-item">
           <a  [ngClass]="[disableMenu() ? 'nav-link disabled' : 'nav-link ']"
-              href="#">
-              Cadastro
+              routerLink="estoque" routerLinkActive="active">Estoque
           </a>
         </li>
         <li class="nav-item">
           <a [ngClass]="[disableMenu() ? 'nav-link disabled' : 'nav-link ']"
-              href="#">Entrar</a>
+              routerLink="fornecedor" routerLinkActive="active">Fornecedor</a>
         </li>
         <li class="nav-item">
-           <a [ngClass]="[disableMenu() ? 'nav-link disabled' : 'nav-link ']">
-              Produtos
+           <a [ngClass]="[disableMenu() ? 'nav-link disabled' : 'nav-link ']"
+           routerLink="precos" routerLinkActive="active">Preços
            </a>
         </li>
-        <li class="nav-item">
-          <a [ngClass]="[disableMenu() ? 'nav-link disabled' : 'nav-link ']">
-              Estoque
-          </a>
-        </li>
-        <li class="nav-item">
-          <a [ngClass]="[disableMenu() ? 'nav-link disabled' : 'nav-link ']">
-              Categorias
+        <li>
+          <a [ngClass]="[disableMenu() ? 'nav-link disabled' : 'nav-link ']"
+          routerLink="movimento" routerLinkActive="active">Movimentação de Produtos
           </a>
         </li>
       </ul>
-      <ul class="nav-bar">
+      <ul class="navbar-nav ">
         <li class="nav-item dropdown" dropdown>
           <a dropdownToggle
             class="nav-link dropdown-toggle"
-            href="#"
             id="navbarDropdownMenuLink"
-            data-toggle="dropdown"
+            data-bs-toggle="dropdown"
+            role="button"
             aria-haspopup="true"
             aria-expanded="false"
-            [ngClass]="[disableMenu() ? 'nav-link disabled' : 'nav-link ']"
+            [ngClass]="[disableMenu() ? 'nav-link dropdown-toggle disabled' : 'nav-link dropdown-toggle']"
           >
             Vinicius
           </a>
@@ -72,12 +65,22 @@
               class="dropdown-menu"
               aria-labelledby="navbarDropdownMenuLink">
             <a Class="dropdown-item"
-              routerLink='/user/profile'
-              [ngClass]="[disableMenu() ? 'nav-link disabled' : 'nav-link ']">
-              Profile
+              routerLink='/user/perfil'
+              routerLinkActive="active"
+              [ngClass]="[disableMenu() ? 'dropdown-item disabled' : 'dropdown-item']">
+              <i class="fas fa-user"></i>
+              Perfil
             </a>
-            <div role="separator" class="divider"></div>
+            <a Class="dropdown-item"
+              routerLink='/user/cadastro'
+              routerLinkActive="active"
+              [ngClass]="[disableMenu() ? 'dropdown-item disabled' : 'dropdown-item ']">
+              <i class="fas fa-users"></i>
+              Cadastro
+            </a>
+            <hr>
             <a (click)="logout()" class="dropdown-item">
+              <i class="fas fa-sign-out-alt"></i>
               Sair
             </a>
           </div>

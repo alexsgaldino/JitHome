@@ -22,6 +22,7 @@ import {BsDatepickerModule}         from 'ngx-bootstrap/datepicker';
 
 
 /* ---------------------- Services IMPORTS ---------------------- */
+import { ProdutoService } from './Services/produto/produto.service';
 
 /* ---------------------- SUPPORT IMPORTS ---------------------- */
 import { AppComponent } from './app.component';
@@ -31,19 +32,30 @@ import { AppRoutingModule } from './app-routing.module';
 import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
 
 /* ---------------------- COMPONENTS IMPORTS ---------------------- */
-import { EstoqueComponent }      from './components/estoque/estoques/estoque.component';
-import { NavComponent }           from './shared/nav/nav.component';
-import { TituloComponent } from './shared/titulo/titulo.component';
+import { EstoqueComponent } from './components/estoque/estoque.component';
+import { EnderecoComponent } from './components/user/endereco/endereco.component';
+import { FornecedorComponent } from './components/fornecedor/fornecedor.component';
+import { ListaPrecoComponent } from './components/listaPreco/listaPreco.component';
 import { ListaProdutosComponent } from './components/produto/lista/listaProdutos.component';
+import { MovimentacaoProdutoComponent } from './components/movimentacaoProduto/movimentacaoProduto.component';
+import { NavComponent } from './shared/nav/nav.component';
+import { TituloComponent } from './shared/titulo/titulo.component';
+import { UserComponent } from './components/user/account/user/user.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     DateTimeFormatPipe,
+    EnderecoComponent,
     EstoqueComponent,
+    FornecedorComponent,
+    ListaPrecoComponent,
     ListaProdutosComponent,
+    MovimentacaoProdutoComponent,
     NavComponent,
-    TituloComponent
+    TituloComponent,
+    UserComponent
   ],
   imports: [
     AppRoutingModule,
@@ -63,7 +75,7 @@ import { ListaProdutosComponent } from './components/produto/lista/listaProdutos
     }),
     TooltipModule.forRoot(),
   ],
-  providers: [],
+  providers: [ProdutoService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })

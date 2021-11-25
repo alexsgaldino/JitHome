@@ -1,12 +1,21 @@
 * {
-  color: white;
+  color: rgba(255, 255, 255, 1.377);;
 }
-.card, .card-header {
-  border-top-left-radius: 1.5rem;
+.card {
+  background-color: rgba(45, 45, 46, 0.8);
+}
+.myTitle {
+  border-radius: 1.5rem;
   border-top-right-radius: 1.5rem;
+  background-color: rgba(152, 154, 156, 0.7);
 }
 
 i {
   font-size: 2.5em;
   margin-right: .3em;
+}
+
+h3 {
+  text-align: center;
+  border-bottom: outset;
 }

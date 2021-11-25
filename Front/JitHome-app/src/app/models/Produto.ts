@@ -16,7 +16,7 @@ export interface Produto {
   dataAlteracao:  Date;
   unidadeMedida: string;
   categoria: string;
-  imsgemURL: string;
+  imagemURL: string;
   movimentoId: number;
   movimentacoesProdutos: MovimentacaoProduto[];
   estoqueId: number;

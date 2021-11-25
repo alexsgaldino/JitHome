@@ -1,8 +1,9 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { Toastrservice } from '@angular/core'
+
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from "ngx-spinner";
+import { ToastrService } from 'ngx-toastr';
 
 import { Produto } from 'src/app/models/Produto';
 import { ProdutoService } from 'src/app/Services/produto/produto.service';
@@ -75,7 +76,7 @@ export class ListaProdutosComponent implements OnInit {
   }
   public confirmar(): void {
     this.modalRef?.hide();
-    this.toastr.sucess("Registro excluído.", 'Excluído')
+    this.toastr.success("Registro excluído.", 'Excluído')
   }
   public recusar(): void {
     this.modalRef?.hide()
