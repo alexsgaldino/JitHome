@@ -64,12 +64,11 @@
                 <td class="d-none d-md-table-cell">{{produto.unidadeMedida}}</td>
                 <td class="d-none d-md-table-cell">{{produto.volume}}</td>
                 <td>{{produto.categoria}}</td>
-                <td class="d-none d-md-table-cell" >{{produto.dataValidade}}</td>
+                <td class="d-none d-md-table-cell" >{{produto.dataValidade | DateFormatPipe}}</td>
       <!--                <td class="d-none d-md-table-cell" >{{produto.dataValidade | DateTimeFormatPipe}}</td>-->
                 <td>
                   <div class="d-grid d-md-flex justify-content-md-end b-0 m-0 p-0">
-                    <button type="button" class="btn btn-danger "  tooltip="Excluir" >
-      <!--                    <button type="button" class="btn btn-danger "  tooltip="Excluir" (click)="openModal($event, template, produto.id)">-->
+                    <button type="button" class="btn btn-danger "  tooltip="Excluir" (click)="abrirModal($event, template, produto.id)">
                     <i class="fa fa-trash"></i>
                     </button>
                   </div>
@@ -112,11 +111,10 @@
 </div>
 
 <p class="text-white">{{produtos | json}}</p>
-<!--
 <ng-template #template>
   <div class="modal-body modal-backdrop-bg text-center">
-    <p>Confirma a exclusão do produto {{this.produtoId}} ?</p>
-    <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
-    <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+    <p>Confirma a exclusão do produto {{this.id}} ?</p>
+    <button type="button" class="btn btn-default" (click)="confirmar()" >Sim</button>
+    <button type="button" class="btn btn-primary" (click)="recusar()" >Não</button>
   </div>
-</ng-template>-->
+</ng-template>

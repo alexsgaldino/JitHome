@@ -1,18 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using JitHome.API.Data;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+
+using System;
+using System.Text;
+using System.Text.Json.Serialization;
+
+using System.Collections.Generic;
+using JitHome.Persistence.Contexts;
+using JitHome.Domain.Models.Identity;
+using JitHome.Application.Contracts;
+using JitHome.Application.Implements;
+using JitHome.Persistence.Contracts;
+using JitHome.Persistence.Implements;
 
 namespace JitHome.API
 {
@@ -31,11 +36,85 @@ namespace JitHome.API
             services.AddDbContext<JitHomeContext>(
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
-            services.AddControllers();
-            services.AddCors();
-            services.AddSwaggerGen(c =>
+
+            services.AddIdentityCore<User>(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "JitHome.API", Version = "v1" });
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+            }).AddRoles<Role>()
+              .AddRoleManager<RoleManager<Role>>()
+              .AddSignInManager<SignInManager<User>>()
+              .AddRoleValidator<RoleValidator<Role>>()
+              .AddEntityFrameworkStores<JitHomeContext>()
+              .AddDefaultTokenProviders();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
+            services.AddControllers()
+                    .AddJsonOptions(
+                        options =>
+                        options.JsonSerializerOptions
+                               .Converters
+                               .Add(new JsonStringEnumConverter())
+                    )
+                    .AddNewtonsoftJson(
+                        options => options.SerializerSettings.ReferenceLoopHandling =
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    );
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<IProdutoService, ProdutoService>();
+            services.AddScoped<IContaService, ContaService>();
+            services.AddScoped<ITokenService, TokenService>();
+
+            services.AddScoped<IGlobalPersist, GlobalPersist>();
+            services.AddScoped<IProdutoPersist, ProdutoPersist>();
+            services.AddScoped<IContaPersist, ContaPersist>();
+
+            services.AddCors();
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "JitHome.API", Version = "v1" });
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header usando Bearer. Entre com 'Bearer ' + seu token",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                });
             });
         }
 
@@ -53,12 +132,20 @@ namespace JitHome.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors(cors => cors.AllowAnyHeader()
-                                    .AllowAnyMethod()
-                                    .AllowAnyOrigin()
+            app.UseCors(corsConection => corsConection.AllowAnyHeader()
+                                                      .AllowAnyMethod()
+                                                      .AllowAnyOrigin()
             );
+
+            //            app.UseStaticFiles(new StaticFileOptions()
+            //            {
+            //                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
+            //                RequestPath = new PathString("/Resources")
+            //            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

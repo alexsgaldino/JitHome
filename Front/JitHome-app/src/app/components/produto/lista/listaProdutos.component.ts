@@ -1,5 +1,12 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Toastrservice } from '@angular/core'
+
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { NgxSpinnerService } from "ngx-spinner";
+
+import { Produto } from 'src/app/models/Produto';
+import { ProdutoService } from 'src/app/Services/produto/produto.service';
+
 
 @Component({
   selector: 'app-listaProdutos',
@@ -7,14 +14,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./listaProdutos.component.scss']
 })
 export class ListaProdutosComponent implements OnInit {
+  public modalRef: BsModalRef | undefined;
 
-  public produtos: any = [];
-  public produtosFiltrados: any = [];
+  public produtos: Produto[] = [];
+  public produtosFiltrados: Produto[] = [];
 
-  larguraImagem = 70;
-  alturaImagem = 110;
-  margemImagem = 2;
-  exibirImagem = true;
+  public larguraImagem = 70;
+  public alturaImagem = 110;
+  public margemImagem = 2;
+  public exibirImagem = true;
 
   private _filtroLista = '';
 
@@ -27,32 +35,49 @@ export class ListaProdutosComponent implements OnInit {
     this.produtosFiltrados = this.filtroLista ? this.filtrarProdutos(this.filtroLista) : this.produtos;
   }
 
-  filtrarProdutos(filtrarPor: string): any {
+  public filtrarProdutos(filtrarPor: string): Produto[] {
     filtrarPor = filtrarPor.toLocaleLowerCase();
     return this.produtos.filter(
       (produto: any) => produto.nomeProduto.toLocaleLowerCase().indexOf(filtrarPor) !== -1 ||
         produto.volume.toLocaleLowerCase().indexOf(filtrarPor) !== -1
     );
   }
-  constructor(private http: HttpClient) { }
+  constructor(
+    private produtoService: ProdutoService,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
+  ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
+    /** spinner starts on init */
+    this.spinner.show();
+
     this.recuperarProdutos();
   }
 
   public recuperarProdutos(): void {
-    this.http.get('https://localhost:5001/api/produtos').subscribe(
-      response => {
-        this.produtos = response;
+    this.produtoService.recuperarProdutos().subscribe({
+      next: (produtos: Produto[]) => {
+        this.produtos = produtos;
         this.produtosFiltrados = this.produtos;
       },
-      error => console.log(error)
-
-      );
+      error: (error: any) => this.toastr.error('Erro ao carregar profutos', 'Erro!')
+    }).add(() => this.spinner.hide());
   }
 
-  recolherImagem() {
+  public recolherImagem(): void {
     this.exibirImagem = !this.exibirImagem;
   }
 
+  public abrirModal(template: TemplateRef<any>): void {
+    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+  }
+  public confirmar(): void {
+    this.modalRef?.hide();
+    this.toastr.sucess("Registro excluído.", 'Excluído')
+  }
+  public recusar(): void {
+    this.modalRef?.hide()
+  }
 }

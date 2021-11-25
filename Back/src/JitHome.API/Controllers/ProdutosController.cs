@@ -1,61 +1,15 @@
 ﻿
-using System.Collections.Generic;
-using System.Linq;
-using JitHome.API.Data;
-using JitResidencial.Domain.Models;
+using System;
+using System.Threading.Tasks;
+using JitHome.Application.Contracts;
+using JitHome.Application.Dtos;
+using JitResidencial.API.Extensions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JitHome.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProdutosController : ControllerBase
-    {
-        private readonly JitHomeContext _context;
-
-        public ProdutosController(JitHomeContext context)
-        {
-            _context = context;
-
-        }
-
-        [HttpGet]
-        public IEnumerable<Produto> Get()
-        {
-            return _context.Produtos;
-        }
-
-        [HttpGet("{id}")]
-        public Produto GetById(int id)
-        {
-            return _context.Produtos.FirstOrDefault(produto => produto.Id == id);
-        }
-        [HttpPost]
-        public string Post()
-        {
-            return "Exemplo de post";
-        }
-        [HttpPut]
-        public string Put()
-        {
-            return "Exemplo de put";
-        }
-    }
-}
-
-/*
-using JitResidencial.Application.Contratos;
-using System.Threading.Tasks;
-using System;
-using Microsoft.AspNetCore.Http;
-using JitResidencial.Application.Dtos;
-using Microsoft.AspNetCore.Hosting;
-using JitResidencial.API.Extensions;
-using Microsoft.AspNetCore.Authorization;
-
-namespace JitResidencial.API.Controllers
-{
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ProdutosController : ControllerBase
@@ -78,7 +32,7 @@ namespace JitResidencial.API.Controllers
         {
             try
             {
-                var produtos = await _produtoService.RecuperarProdutosAsync(User.GetUserId());
+                var produtos = await _produtoService.RecuperarProdutosAsync(User.RecuperarContaPorId());
                 if (produtos == null) return NoContent();
 
                 return Ok(produtos);
@@ -96,7 +50,7 @@ namespace JitResidencial.API.Controllers
         {
             try
             {
-                var produto = await _produtoService.RecuperarProdutoPorIdAsync(User.GetUserId(), id);
+                var produto = await _produtoService.RecuperarProdutoPorIdAsync(User.RecuperarContaPorId(), id);
                 if (produto == null) return NoContent();
 
                 return Ok(produto);
@@ -113,7 +67,7 @@ namespace JitResidencial.API.Controllers
         {
             try
             {
-                var produto = await _produtoService.RecuperarProdutosPorNomeProdutoAsync(User.GetUserId(), nomeProduto);
+                var produto = await _produtoService.RecuperarProdutosPorNomeProdutoAsync(User.RecuperarContaPorId(), nomeProduto);
                 if (produto == null) return NoContent();
 
                 return Ok(produto);
@@ -130,7 +84,7 @@ namespace JitResidencial.API.Controllers
         {
             try
             {
-                var produto = await _produtoService.RecuperarProdutosPorCodigoBarrasAsync(User.GetUserId(), codigoBarras);
+                var produto = await _produtoService.RecuperarProdutosPorCodigoBarrasAsync(User.RecuperarContaPorId(), codigoBarras);
                 if (produto == null) return NoContent();
 
                 return Ok(produto);
@@ -147,7 +101,7 @@ namespace JitResidencial.API.Controllers
         {
             try
             {
-                var produto = await _produtoService.IncluirProdutos(User.GetUserId(), model);
+                var produto = await _produtoService.IncluirProdutos(User.RecuperarContaPorId(), model);
                 if (produto == null) return NoContent(); ;
 
                 return Ok(produto);
@@ -164,7 +118,7 @@ namespace JitResidencial.API.Controllers
         {
             try
             {
-                var produto = await _produtoService.AlterarProduto(User.GetUserId(), id, model);
+                var produto = await _produtoService.AlterarProduto(User.RecuperarContaPorId(), id, model);
                 if (produto == null) return NoContent(); ;
 
                 return Ok(produto);
@@ -181,7 +135,7 @@ namespace JitResidencial.API.Controllers
         {
             try
             {
-                if (await _produtoService.ExcluirProduto(User.GetUserId(), id))
+                if (await _produtoService.ExcluirProduto(User.RecuperarContaPorId(), id))
                     return Ok(new { message = "Deletado" });
                 else
                     return BadRequest("Evento não deletado");
